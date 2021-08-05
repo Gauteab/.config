@@ -1,0 +1,33 @@
+snippet talon "talon module"
+from talon import Context, Module, actions, settings, ctrl
+
+module = Module()
+context = Context()
+
+endsnippet
+
+snippet action "action"
+@module.action_class
+class Actions:
+	def $1():
+		pass
+endsnippet
+	
+
+snippet capture "capture"
+@module.capture(rule="$2")
+def $1(m) -> str:
+    return $3
+endsnippet
+
+snippet list "list"
+module.list("$1", desc="$1")
+context.lists["user.$1"] = {
+	$2
+}
+endsnippet
+
+snippet nodetext "python tree sitter node text function"
+def node_text(node, source_bytes):
+    return source_bytes[node.start_byte:node.end_byte].decode('utf8')
+endsnippet

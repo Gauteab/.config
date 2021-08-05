@@ -1,0 +1,5 @@
+snippet ffi "description"
+$1 :: TreeCursor -> Effect Boolean
+$1 cursor = (unsafeCoerce cursor :: { $1 :: Unit -> Effect Boolean }).$1 unit
+endsnippet
+	

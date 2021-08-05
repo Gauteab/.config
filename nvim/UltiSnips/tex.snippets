@@ -1,0 +1,32 @@
+snippet subfile "begin a subfile"
+\documentclass[../thesis.tex]{subfiles}
+
+\begin{document}
+
+$1
+
+\end{document}
+endsnippet
+	
+snippet mint "begin minted block"
+\begin{minted}{$1}
+\end{minted}
+endsnippet
+
+snippet elmexample "description"
+\begin{example}[$1]\label{$2}
+\begin{minted}{elm}
+$3
+\end{minted}
+\end{example}
+endsnippet
+	
+snippet lst "lst"
+\begin{listing}[ht]
+\begin{minted}{${1:Python}}
+$2
+\end{minted}
+\caption{$3}
+\label{listing:$4}
+\end{listing}
+endsnippet

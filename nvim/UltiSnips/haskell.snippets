@@ -1,0 +1,65 @@
+snippet mod "A Simple module"
+module ${1:Main} where
+endsnippet
+
+snippet rec "Record"
+data $1 = $1 { field :: Value }
+endsnippet
+
+snippet field "RecordField"
+, $1 :: $1
+endsnippet
+	
+	
+	
+snippet ec "Evaluate-able comment"
+-- >>> 
+endsnippet
+
+snippet re "Import Relude"
+{-# LANGUAGE NoImplicitPrelude #-}
+import Relude
+endsnippet
+	
+snippet sh "Shell Script Template"
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ExtendedDefaultRules #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+
+import Relude
+import Shelly
+
+main :: IO ()
+main = shelly $ do
+	echo ${1:"Hello"}
+endsnippet
+
+snippet cw "CodeWars Template"
+import Test.Hspec
+
+main :: IO ()
+main = hspec spec
+endsnippet
+
+snippet aoc "Advent of Code"
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+
+import Control.Lens
+import qualified Data.Map as Map
+import qualified Data.Set as Set
+import qualified Data.Text as Text
+import Relude
+
+main :: IO ()
+main = do
+  input <- ${1:undefined} <$> readFileText "./input/day1"
+  print $ input
+  print $ part1 input -- 
+  print $ part2 input -- 
+
+part1 input = "TODO"
+
+part2 input = "TODO"
+
+endsnippet
