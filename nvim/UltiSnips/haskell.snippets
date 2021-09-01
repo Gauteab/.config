@@ -2,6 +2,12 @@ snippet mod "A Simple module"
 module ${1:Main} where
 endsnippet
 
+snippet proxy "servant api proxy"
+api :: Proxy ${1:API}
+api = Proxy
+endsnippet
+	
+
 snippet rec "Record"
 data $1 = $1 { field :: Value }
 endsnippet

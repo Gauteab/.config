@@ -1,5 +1,6 @@
 {
   "coc.preferences.formatOnSaveFiletypes": [
+    "sql",
     "elm",
     "json",
     "typescript",
@@ -28,6 +29,7 @@
     },
     "haskell": {
       "command": "haskell-language-server-wrapper",
+      "formattingProvider": "fourmolu",
       "args": ["--lsp"],
       "rootPatterns": [
         "*.cabal",
