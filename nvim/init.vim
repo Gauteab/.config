@@ -12,7 +12,7 @@ call plug#begin('~/.vim/plugged')
     " Editing
     Plug 'jiangmiao/auto-pairs'
     Plug 'junegunn/vim-easy-align'
-	Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'unblevable/quick-scope'
 
@@ -24,17 +24,23 @@ call plug#begin('~/.vim/plugged')
 
     " IDE
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
-	Plug 'w0rp/ale'
-	Plug 'SirVer/ultisnips' " Snippet engine
-	Plug 'honza/vim-snippets' " Snippet collection
-	Plug 'sheerun/vim-polyglot' " Syntax Highlighting for many languages
+    Plug 'w0rp/ale'
+    Plug 'SirVer/ultisnips' " Snippet engine
+    Plug 'honza/vim-snippets' " Snippet collection
+    Plug 'sheerun/vim-polyglot' " Syntax Highlighting for many languages
     Plug 'vim-airline/vim-airline'
     Plug 'monkoose/fzf-hoogle.vim'
     Plug 'aquach/vim-http-client'
 
+    " GIT
+    Plug 'mhinz/vim-signify'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-rhubarb'
+    Plug 'junegunn/gv.vim'
+
     " Misc
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-	Plug 'dkasak/gruvbox' " theme
+    Plug 'dkasak/gruvbox' " theme
     Plug 'chrisbra/Colorizer' " highlight color codes
     Plug 'christoomey/vim-run-interactive'
     Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
@@ -90,9 +96,9 @@ set expandtab
 set nowrap
 set number relativenumber
 
-map <space>ee :e  ~/$CONFIG/nvim/init.vim<cr>
-map <space>ev :vs  ~/$CONFIG/nvim/init.vim<cr>
-map <space>es :sp  ~/$CONFIG/nvim/init.vim<cr>
+map <space>ee :e  $CONFIG/nvim/init.vim<cr>
+map <space>ev :vs  $CONFIG/nvim/init.vim<cr>
+map <space>es :sp  $CONFIG/nvim/init.vim<cr>
 map <space>so :w<cr> :source $MYVIMRC<cr> 
 " Return to previous buffer
 map <space>b :e#<cr>
@@ -216,3 +222,4 @@ command! -bang -nargs=? -complete=dir Files
 
 nnoremap <leader>n :w<CR>:UpdateRemotePlugins<CR>:q<CR>
 
+command! -bang ProjectFiles call fzf#vim#files('~/code', <bang>0)

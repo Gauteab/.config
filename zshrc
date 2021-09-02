@@ -1,6 +1,6 @@
 export TERM="xterm-256color"
 export EDITOR="nvim"
-export CONFIG=~/.config
+export CONFIG="$HOME/.config"
 
 # == ZSH ==
 export ZSH="$HOME/.oh-my-zsh"
