@@ -41,9 +41,9 @@
       "filetypes": ["haskell", "lhaskell"]
     },
     "elmLS": {
-      "command": "/Users/gauteab/projects/talon-lsp-wrapper/bin/talon-lsp-wrapper",
+      /* "command": "/Users/gauteab/projects/talon-lsp-wrapper/bin/talon-lsp-wrapper", */
       /* "args": ["/Users/gauteab/projects/talon-lsp-wrapper/index.ts 2> ~/.errlog"], */
-      /* "command": "elm-language-server", */
+      "command": "elm-language-server",
       "filetypes": ["elm"],
       "rootPatterns": ["elm.json"],
       "initializationOptions": {

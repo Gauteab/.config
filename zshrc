@@ -1,5 +1,6 @@
 export TERM="xterm-256color"
 export EDITOR="nvim"
+export CONFIG=~/.config
 
 # == ZSH ==
 export ZSH="$HOME/.oh-my-zsh"
@@ -19,7 +20,8 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source ~/dotfiles/elm-cli-extra.sh
+source ~/.profile
+# source ~/dotfiles/elm-cli-extra.sh
 
 # Vi Mode
 bindkey -v
@@ -28,29 +30,34 @@ bindkey -v
 alias vi="nvim"
 # alias vim="nvim"
 alias gitit="git add --all && git commit && git push"
-alias zshrc='vi ~/dotfiles/zshrc && source ~/.zshrc'
-alias vimrc='vi ~/dotfiles/vimrc'
+alias zshrc="vi ~/$CONFIG/zshrc && source ~/.zshrc"
+alias vimrc="vi ~/$CONFIG/nvim/init.vim"
+
 alias l='clear; exa -la --group-directories-first'
 alias ls='exa'
 alias tree='exa -l -T'
+
 alias skim='open -a "Skim"'
 alias timel='python3 ~/uio/Timelisteskript/timeliste.py Gaute Berge IN2000 16-11-1996'
 alias pdfviewer='open -a "Google Chrome" -n --args "chrome-extension://gfbliohnnapiefjpjlpjnehglfpaknnc/pages/pdf_viewer.html"'
-alias java-format='java -jar ~/opt/google-java-format-1.9-all-deps.jar'
+
 alias talon-repl='~/.talon/.venv/bin/repl'
 alias talon-log='tail -f ~/.talon/talon.log'
 alias talon-pip='~/.talon/bin/pip'
 
 
-# Run in stack project to fix an issue with the language server
-function hie-fix {
+
+# Functions
+
+function cheat { curl "cheat.sh/$1" }
+
+function hie-fix { # run in stack project to fix an issue with the language server
     gen-hie > hie.yaml
     rm -rf .stack-work
     stack build
 }
 
-# fkill - kill processes - list only the ones you can kill. Modified the earlier script.
-fkill() {
+fkill() { # fkill - kill processes - list only the ones you can kill. Modified the earlier script.
     local pid 
     if [ "$UID" != "0" ]; then
         pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
@@ -64,6 +71,7 @@ fkill() {
     fi  
 }
 
+# use fzf with 'z'
 unalias z 2> /dev/null
 z() {
   [ $# -gt 0 ] && _z "$*" && return
