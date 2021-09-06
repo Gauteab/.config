@@ -106,10 +106,16 @@ map <space><space>b :Buffers<cr>
 " Windowing
 map <space>vs :vs<cr>
 map <space>sp :sp<cr>
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-h> <C-w>h
-map <C-l> <C-w>l
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <leader><C-j> <C-w>J
+nnoremap <leader><C-k> <C-w>K
+nnoremap <leader><C-h> <C-w>H
+nnoremap <leader><C-l> <C-w>L
+map + <C-w>+
+map - <C-w>-
 
 let g:python_host_prog = "/usr/bin/python2"
 let g:python3_host_prog = "/usr/bin/python3"
