@@ -1,23 +1,21 @@
-" Setup Plug
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
 
 " Plugins
 call plug#begin('~/.vim/plugged')
-    " Plug 'Gauteab/talon-fluent-nvim'
-
     " Editing
     Plug 'jiangmiao/auto-pairs'
     Plug 'junegunn/vim-easy-align'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'unblevable/quick-scope'
+    Plug 'kana/vim-textobj-entire'
+    Plug 'mg979/vim-visual-multi'
+    Plug 'michaeljsmith/vim-indent-object'
+    Plug 'matze/vim-move'
+    Plug 'wellle/targets.vim'
 
     " Navigation
     Plug 'easymotion/vim-easymotion'
+    " Plug 'phaazon/hop.nvim'
     Plug 'preservim/nerdtree'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
@@ -44,14 +42,34 @@ call plug#begin('~/.vim/plugged')
     Plug 'chrisbra/Colorizer' " highlight color codes
     Plug 'christoomey/vim-run-interactive'
     Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+
+    " Plug 'Gauteab/talon-fluent-nvim'
 call plug#end()
 
 " Set leader to space
 let mapleader = " "
 
+" Move lines
+nnoremap √ :m .+1<CR>==
+nnoremap ª :m .-2<CR>==
+inoremap √ <Esc>:m .+1<CR>==gi
+inoremap º <Esc>:m .-2<CR>==gi
+vnoremap √ :m '>+1<CR>gv=gv
+vnoremap º :m '<-2<CR>gv=gv 
+
+map cd :cd 
+
+" Spilling
 nnoremap <C-f> z=
 nnoremap <C-S> ]s
 nnoremap <C-s> [s
+
+" Git
+nmap <leader>gs :G<CR>
+nmap <leader>gp :G push<CR>
+nmap <leader>gl :G pull<CR>
+nmap <leader>gf :diffget //3<CR>
+nmap <leader>gj :diffget //2<CR>
 
 " Markdown Preview
 let g:mkdp_auto_close = 0
@@ -61,7 +79,15 @@ nmap ga <Plug>(EasyAlign)
 
 " Easy Motion
 nmap <C-M> <Plug>(easymotion-overwin-f)
+imap <C-e> <ESC><Plug>(easymotion-overwin-f)
+vmap <C-e> <ESC><Plug>(easymotion-overwin-f)
 let g:EasyMotion_smartcase = 1
+
+" Hop
+" map <C-m>l :HopLine<cr>
+" noremap <C-M> :HopChar<cr>
+" map <C-m>c :HopChar<cr>
+" map <C-m>w :HopWord<cr>
 
 " Snippets
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -96,9 +122,9 @@ set expandtab
 set nowrap
 set number relativenumber
 
-map <space>ee :e  $CONFIG/nvim/init.vim<cr>
-map <space>ev :vs  $CONFIG/nvim/init.vim<cr>
-map <space>es :sp  $CONFIG/nvim/init.vim<cr>
+map <space>ee :e  $MYVIMRC<cr>
+map <space>ev :vs  $MYVIMRC<cr>
+map <space>es :sp  $MYVIMRC<cr>
 map <space>so :w<cr> :source $MYVIMRC<cr> 
 " Return to previous buffer
 map <space>b :e#<cr>
@@ -139,13 +165,14 @@ nmap <leader>cl :CocList --number-select <CR>
 nmap <leader>ch :call CocAction('doHover')<CR>
 " nmap <leader>cf :call CocAction('format')<CR>
 nmap <leader>cf :CocFix<CR>
+nmap <leader>ca :CocAction<CR>
 nmap <leader>cre :CocRestart<CR>
 nmap <silent> <leader>ct <Plug>(coc-type-definition)
 nmap <silent> <leader>ci  <Plug>(coc-implementation)
 nmap <silent> <leader>cr <Plug>(coc-references)
 nmap <silent> <leader>ce <Plug>(coc-codelens-action)
 nmap <silent> <C-b> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-n> <Plug>(coc-diagnostic-next)
+nmap <silent> <C-B> <Plug>(coc-diagnostic-next)
 
 " == ALE ==
 function! FormatHaskell(buffer) abort
@@ -214,8 +241,8 @@ augroup vimrc-incsearch-highlight
 augroup END
 
 " === FZF ===
-map <space>g :Files<CR>
-map <space>rg :Rg<CR>
+map <space>f :Files!<CR>
+map <space>rg :Rg!<CR>
 let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
 command! -bang -nargs=? -complete=dir Files
