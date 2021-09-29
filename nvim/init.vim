@@ -145,8 +145,12 @@ nnoremap <F5> "=strftime("%Y-%m-%d")<CR>p
 inoremap <F5> <ESC>"=strftime("%Y-%m-%d")<CR>p
 
 nnoremap <space>ho :Hoogle<cr>
-" Exit terminal mode with ESC
-tnoremap <ESC> <C-\><C-n>
+
+" Terminal
+tnoremap <C-space> <C-\><C-n>
+set shell=/bin/zsh
+autocmd TermOpen * setlocal nonumber norelativenumber
+
 
 set autoread
 
@@ -210,6 +214,7 @@ augroup configgroup
     autocmd BufEnter *.purs,*.hs,*.ts,*.ts*,*.js* setlocal shiftwidth=2
     autocmd BufEnter *.purs,*.hs,*.ts,*.ts*,*.js* setlocal softtabstop=2
     autocmd BufEnter *.elm nnoremap <buffer> <leader>ta 0ywkpA: 
+    autocmd BufEnter *.elm set ft=elm
     autocmd BufEnter *.hs,*.purs nnoremap <buffer> <leader>ta 0ywkpA:: 
     " autocmd BufWritePost *.hs silent call Fourmolu()
 augroup END
