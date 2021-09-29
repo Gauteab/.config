@@ -78,16 +78,8 @@ let g:mkdp_auto_close = 0
 nmap ga <Plug>(EasyAlign)
 
 " Easy Motion
-nmap <C-M> <Plug>(easymotion-overwin-f)
-imap <C-e> <ESC><Plug>(easymotion-overwin-f)
-vmap <C-e> <ESC><Plug>(easymotion-overwin-f)
+nmap <C-M> <Plug>(easymotion-overwin-w)
 let g:EasyMotion_smartcase = 1
-
-" Hop
-" map <C-m>l :HopLine<cr>
-" noremap <C-M> :HopChar<cr>
-" map <C-m>c :HopChar<cr>
-" map <C-m>w :HopWord<cr>
 
 " Snippets
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -126,10 +118,13 @@ map <space>ee :e  $MYVIMRC<cr>
 map <space>ev :vs  $MYVIMRC<cr>
 map <space>es :sp  $MYVIMRC<cr>
 map <space>so :w<cr> :source $MYVIMRC<cr> 
-" Return to previous buffer
-map <space>b :e#<cr>
-map <space><space>b :Buffers<cr>
-" Windowing
+
+" Buffers
+map <C-b> :bprev<cr>
+map <C-B> :bnext<cr>
+map <space>b :Buffers<cr>
+
+" Windows
 map <space>vs :vs<cr>
 map <space>sp :sp<cr>
 nnoremap <C-j> <C-w>j
