@@ -120,7 +120,7 @@ map <space>es :sp  $MYVIMRC<cr>
 map <space>so :w<cr> :source $MYVIMRC<cr> 
 
 " Buffers
-map <C-b> :bprev<cr>
+nmap <C-b> :bprev<cr>
 map <C-B> :bnext<cr>
 map <space>b :Buffers<cr>
 
@@ -137,6 +137,7 @@ nnoremap <leader><C-h> <C-w>H
 nnoremap <leader><C-l> <C-w>L
 map + <C-w>+
 map - <C-w>-
+nmap <C-x> :q<cr>
 
 let g:python_host_prog = "/usr/bin/python2"
 let g:python3_host_prog = "/usr/bin/python3"
