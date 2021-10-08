@@ -7,7 +7,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-surround'
     Plug 'unblevable/quick-scope'
-    Plug 'kana/vim-textobj-entire'
+    " Plug 'kana/vim-textobj-entire'
     Plug 'mg979/vim-visual-multi'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'matze/vim-move'
@@ -27,14 +27,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'honza/vim-snippets' " Snippet collection
     Plug 'sheerun/vim-polyglot' " Syntax Highlighting for many languages
     Plug 'vim-airline/vim-airline'
-    Plug 'monkoose/fzf-hoogle.vim'
+    " Plug 'monkoose/fzf-hoogle.vim'
     Plug 'aquach/vim-http-client'
 
     " GIT
-    Plug 'mhinz/vim-signify'
-    Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-rhubarb'
-    Plug 'junegunn/gv.vim'
+    " Plug 'mhinz/vim-signify'
+    " Plug 'tpope/vim-fugitive'
+    " Plug 'tpope/vim-rhubarb'
+    " Plug 'junegunn/gv.vim'
+    Plug 'TimUntersberger/neogit'
+    Plug 'sindrets/diffview.nvim'
 
     " Misc
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -42,6 +44,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'chrisbra/Colorizer' " highlight color codes
     Plug 'christoomey/vim-run-interactive'
     Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+    Plug 'nvim-lua/plenary.nvim'
 
     " Plug 'Gauteab/talon-fluent-nvim'
 call plug#end()
@@ -148,7 +151,9 @@ inoremap <F5> <ESC>"=strftime("%Y-%m-%d")<CR>p
 nnoremap <space>ho :Hoogle<cr>
 
 " Terminal
+nnoremap <space>te :term<cr>
 tnoremap <C-space> <C-\><C-n>
+tnoremap <C-h> <C-space><C-h>
 set shell=/bin/zsh
 autocmd TermOpen * setlocal nonumber norelativenumber
 
@@ -224,6 +229,7 @@ augroup runable
     autocmd FileType python map <F9> :w<CR>:!python3 %<CR>
     autocmd FileType elm map <F9> :w<CR>:!elm-run %<CR>
     autocmd FileType haskell map <F9> :w<CR>:!runhaskell %<CR>
+    autocmd FileType haskell map <F10> :w<CR>:!stack %<CR>
     autocmd FileType purescript map <F9> :w<CR>:!spago run<CR>
     autocmd FileType tex map <F9> :w<CR>:!pdflatex %<CR>
     autocmd FileType teraterm map <F9> :w<CR>:!ttl %<CR>
