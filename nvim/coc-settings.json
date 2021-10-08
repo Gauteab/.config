@@ -1,4 +1,5 @@
 {
+  "diagnostic.checkCurrentLine": false,
   "coc.preferences.formatOnSaveFiletypes": [
     "sql",
     "elm",
@@ -43,8 +44,8 @@
     "elmLS": {
       /* "command": "/Users/gauteab/projects/talon-lsp-wrapper/bin/talon-lsp-wrapper", */
       /* "args": ["/Users/gauteab/projects/talon-lsp-wrapper/index.ts 2> ~/.errlog"], */
-      "command": "elm-language-server",
-      /* "command": "/Users/gaute/elm-language-server/out/index.js", */
+      // "command": "elm-language-server",
+      "command": "/Users/gaute/elm-language-server/out/index.js",
       "filetypes": ["elm"],
       "rootPatterns": ["elm.json"],
       "initializationOptions": {

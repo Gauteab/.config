@@ -118,3 +118,7 @@ function haskell-deamon {
         --restart="./package.yaml" \
         --restart "./stack.yaml"
 }
+
+eval "$(starship init zsh)"
+
+# zplug "zsh-users/zsh-syntax-highlighting", defer:2
