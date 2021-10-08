@@ -78,8 +78,8 @@ let g:mkdp_auto_close = 0
 nmap ga <Plug>(EasyAlign)
 
 " Easy Motion
-nmap <C-M> <Plug>(easymotion-overwin-w)
-let g:EasyMotion_smartcase = 1
+" nmap <C-M> <Plug>(easymotion-overwin-w)
+" let g:EasyMotion_smartcase = 1
 
 " Snippets
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -101,7 +101,7 @@ set backspace=indent,eol,start
 set noswapfile " Disbale auto backup
 set scrolloff=8 " Scroll offset
 set mouse=a " Make the mouse work
-set clipboard=unnamed " vim and os use same clipboard
+set clipboard=unnamedplus " vim and os use same clipboard
 set inccommand=nosplit
 " Theme
 colo gruvbox
