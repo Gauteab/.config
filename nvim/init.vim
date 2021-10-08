@@ -19,6 +19,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdtree'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
+    Plug 'kyazdani42/nvim-tree.lua'
 
     " IDE
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
@@ -37,9 +38,11 @@ call plug#begin('~/.vim/plugged')
     " Plug 'junegunn/gv.vim'
     Plug 'TimUntersberger/neogit'
     Plug 'sindrets/diffview.nvim'
+    Plug 'airblade/vim-gitgutter'
 
     " Misc
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+    Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'dkasak/gruvbox' " theme
     Plug 'chrisbra/Colorizer' " highlight color codes
     Plug 'christoomey/vim-run-interactive'
@@ -67,12 +70,12 @@ nnoremap <C-f> z=
 nnoremap <C-S> ]s
 nnoremap <C-s> [s
 
-" Git
-nmap <leader>gs :G<CR>
-nmap <leader>gp :G push<CR>
-nmap <leader>gl :G pull<CR>
-nmap <leader>gf :diffget //3<CR>
-nmap <leader>gj :diffget //2<CR>
+" " Git
+" nmap <leader>gs :G<CR>
+" nmap <leader>gp :G push<CR>
+" nmap <leader>gl :G pull<CR>
+" nmap <leader>gf :diffget //3<CR>
+" nmap <leader>gj :diffget //2<CR>
 
 " Markdown Preview
 let g:mkdp_auto_close = 0
@@ -118,6 +121,7 @@ set nowrap
 set number relativenumber
 
 map <space>ee :e  $MYVIMRC<cr>
+map <space>el :e  $CONFIG/nvim/lua/init.lua<cr>
 map <space>ev :vs  $MYVIMRC<cr>
 map <space>es :sp  $MYVIMRC<cr>
 map <space>so :w<cr> :source $MYVIMRC<cr> 
