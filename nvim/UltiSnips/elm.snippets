@@ -79,3 +79,7 @@ snippet dbg "description"
  <| Apptekster.fromString Debug.todo 
 endsnippet
 	
+snippet map "update function"
+update${1/\w+/\u$0/g} f m =
+    { m | $1 = f m.$1 }
+endsnippet

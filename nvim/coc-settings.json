@@ -1,5 +1,5 @@
 {
-  "diagnostic.checkCurrentLine": false,
+  "diagnostic.checkCurrentLine": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "sql",
     "elm",
@@ -12,9 +12,6 @@
     "haskell"
   ],
   "codeLens.enable": true,
-  "pyls.enable": true,
-  "pyls.commandPath": "/usr/local/bin/pyls",
-  "python.jediEnabled": false,
   "languageserver": {
     "purescript": {
       "command": "purescript-language-server",

@@ -14,15 +14,17 @@ call plug#begin('~/.vim/plugged')
     Plug 'wellle/targets.vim'
 
     " Navigation
-    Plug 'easymotion/vim-easymotion'
-    " Plug 'phaazon/hop.nvim'
+    " Plug 'easymotion/vim-easymotion'
+    Plug 'phaazon/hop.nvim'
     Plug 'preservim/nerdtree'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
+    Plug 'nvim-telescope/telescope.nvim'
     Plug 'kyazdani42/nvim-tree.lua'
 
     " IDE
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
+    Plug 'neovim/nvim-lspconfig'
     Plug 'w0rp/ale'
     Plug 'SirVer/ultisnips' " Snippet engine
     Plug 'honza/vim-snippets' " Snippet collection
@@ -33,8 +35,8 @@ call plug#begin('~/.vim/plugged')
 
     " GIT
     " Plug 'mhinz/vim-signify'
-    " Plug 'tpope/vim-fugitive'
-    " Plug 'tpope/vim-rhubarb'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-rhubarb'
     " Plug 'junegunn/gv.vim'
     Plug 'TimUntersberger/neogit'
     Plug 'sindrets/diffview.nvim'
@@ -55,6 +57,17 @@ call plug#end()
 " Set leader to space
 let mapleader = " "
 
+" Find files using Telescope command-line sugar.
+nnoremap <leader><space> <cmd>Telescope commands<cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fc <cmd>Telescope git_commits<cr>
+nnoremap <leader>fgb <cmd>Telescope git_branches<cr> 
+nnoremap <leader>fgbc <cmd>Telescope git_bcommits<cr>
+nnoremap <leader>fgs <cmd>Telescope git_status<cr>
+
 " Move lines
 nnoremap √ :m .+1<CR>==
 nnoremap ª :m .-2<CR>==
@@ -70,12 +83,17 @@ nnoremap <C-f> z=
 nnoremap <C-S> ]s
 nnoremap <C-s> [s
 
-" " Git
-" nmap <leader>gs :G<CR>
-" nmap <leader>gp :G push<CR>
-" nmap <leader>gl :G pull<CR>
-" nmap <leader>gf :diffget //3<CR>
-" nmap <leader>gj :diffget //2<CR>
+" Git
+nmap <leader>gs :G<CR>
+nmap <leader>gd :DiffviewOpen<CR>
+nmap <leader>gp :G push<CR>
+nmap <leader>gl :G pull<CR>
+nmap <leader>gf :diffget //3<CR>
+nmap <leader>gj :diffget //2<CR>
+nmap gn :GitGutterNextHunk<cr> 
+nmap gN :GitGutterPrevHunk<cr> 
+" nnoremap <C-b> :bNext<cr>
+" nnoremap <C-B> :blast<cr>
 
 " Markdown Preview
 let g:mkdp_auto_close = 0
@@ -83,6 +101,8 @@ let g:mkdp_auto_close = 0
 " EasyAlign
 nmap ga <Plug>(EasyAlign)
 
+nmap <space>h :HopWord<cr>
+nmap <space>1 :HopChar1<cr>
 " Easy Motion
 " nmap <C-M> <Plug>(easymotion-overwin-w)
 " let g:EasyMotion_smartcase = 1
@@ -204,15 +224,15 @@ let g:ale_java_google_java_format_options = '-i'
 let g:ale_fix_on_save = 1
 let g:ale_c_clangformat_options = '--style=WebKit'
 
-map <space>at :ALEToggle<CR>
-map <space>af :ALEFix<CR>
-map <space>ap :ALEPrevious<CR>
-map <space>an :ALENextWrap<CR>
+" map <space>at :ALEToggle<CR>
+" map <space>af :ALEFix<CR>
+" map <space>ap :ALEPrevious<CR>
+" map <space>an :ALENextWrap<CR>
 
 augroup configgroup
     autocmd!
     " Highlight the symbol and its references when holding the cursor.
-    autocmd CursorHold * silent call CocActionAsync('highlight')
+    " autocmd CursorHold * silent call CocActionAsync('highlight')
     " autocmd CursorHold * silent call CocActionAsync('doHover')
     autocmd BufEnter *.pl setlocal filetype=prolog
     autocmd BufEnter *.talon setlocal filetype=conf
@@ -252,8 +272,8 @@ augroup vimrc-incsearch-highlight
 augroup END
 
 " === FZF ===
-map <space>f :Files!<CR>
-map <space>rg :Rg!<CR>
+" map <space>f :Files!<CR>
+" map <space>rg :Rg!<CR>
 let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
 command! -bang -nargs=? -complete=dir Files
@@ -264,6 +284,6 @@ command! -bang -nargs=? -complete=dir Files
 
 " source ~/.talon/user/lsp/talon_lsp.vim
 
-nnoremap <leader>n :w<CR>:UpdateRemotePlugins<CR>:q<CR>
+" nnoremap <leader>n :w<CR>:UpdateRemotePlugins<CR>:q<CR>
 
 command! -bang ProjectFiles call fzf#vim#files('~/code', <bang>0)
