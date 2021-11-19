@@ -122,3 +122,7 @@ function haskell-deamon {
 eval "$(starship init zsh)"
 
 # zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+
+# [[ $TERM != "screen" ]] && exec tmux
+

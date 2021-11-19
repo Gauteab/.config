@@ -20,6 +20,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    " Plug 'nvim-telescope/telescope-fzy-native.nvim'
     Plug 'kyazdani42/nvim-tree.lua'
 
     " IDE
@@ -29,7 +31,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'SirVer/ultisnips' " Snippet engine
     Plug 'honza/vim-snippets' " Snippet collection
     Plug 'sheerun/vim-polyglot' " Syntax Highlighting for many languages
-    Plug 'vim-airline/vim-airline'
+    " Plug 'vim-airline/vim-airline'
+    Plug 'nvim-lualine/lualine.nvim'
     " Plug 'monkoose/fzf-hoogle.vim'
     Plug 'aquach/vim-http-client'
 
@@ -46,6 +49,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'dkasak/gruvbox' " theme
+    Plug 'marko-cerovac/material.nvim'
     Plug 'chrisbra/Colorizer' " highlight color codes
     Plug 'christoomey/vim-run-interactive'
     Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
@@ -59,14 +63,10 @@ let mapleader = " "
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader><space> <cmd>Telescope commands<cr>
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>fc <cmd>Telescope git_commits<cr>
-nnoremap <leader>fgb <cmd>Telescope git_branches<cr> 
-nnoremap <leader>fgbc <cmd>Telescope git_bcommits<cr>
-nnoremap <leader>fgs <cmd>Telescope git_status<cr>
+nnoremap <leader>f <cmd>Telescope find_files<cr>
+" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+" nnoremap <leader>fb <cmd>Telescope buffers<cr>
+" nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " Move lines
 nnoremap √ :m .+1<CR>==
@@ -78,20 +78,27 @@ vnoremap º :m '<-2<CR>gv=gv
 
 map cd :cd 
 
-" Spilling
+" Spelling
 nnoremap <C-f> z=
 nnoremap <C-S> ]s
 nnoremap <C-s> [s
 
 " Git
-nmap <leader>gs :G<CR>
+nmap <leader>gg :G<CR>
 nmap <leader>gd :DiffviewOpen<CR>
+nmap <leader>dvc :DiffviewClose<CR>
+nmap <leader>dvm :DiffviewOpen master<CR>
+nmap <leader>gfh :DiffviewFileHistory<CR>
 nmap <leader>gp :G push<CR>
 nmap <leader>gl :G pull<CR>
 nmap <leader>gf :diffget //3<CR>
 nmap <leader>gj :diffget //2<CR>
-nmap gn :GitGutterNextHunk<cr> 
-nmap gN :GitGutterPrevHunk<cr> 
+nmap <leader>gfc <cmd>Telescope git_commits<cr>
+nmap <leader>gb <cmd>Telescope git_branches<cr> 
+nmap <leader>gs <cmd>Telescope git_status<cr>
+nmap <leader>ghp :GitGutterPreviewHunk<cr>
+nmap gh :GitGutterNextHunk<cr> 
+nmap gH :GitGutterPrevHunk<cr> 
 " nnoremap <C-b> :bNext<cr>
 " nnoremap <C-B> :blast<cr>
 
@@ -101,8 +108,8 @@ let g:mkdp_auto_close = 0
 " EasyAlign
 nmap ga <Plug>(EasyAlign)
 
-nmap <space>h :HopWord<cr>
-nmap <space>1 :HopChar1<cr>
+nmap <space>j :HopWord<cr>
+nmap <space>h :HopChar1<cr>
 " Easy Motion
 " nmap <C-M> <Plug>(easymotion-overwin-w)
 " let g:EasyMotion_smartcase = 1
@@ -130,8 +137,10 @@ set mouse=a " Make the mouse work
 set clipboard=unnamedplus " vim and os use same clipboard
 set inccommand=nosplit
 " Theme
-colo gruvbox
-set background=dark
+" colo gruvbox
+let g:material_style = 'deep ocean'
+colo material
+" set background=dark
 " Default indent set to 4
 set tabstop=4 
 set softtabstop=4
@@ -273,7 +282,7 @@ augroup END
 
 " === FZF ===
 " map <space>f :Files!<CR>
-" map <space>rg :Rg!<CR>
+map <space>rg :Rg!<CR>
 let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
 command! -bang -nargs=? -complete=dir Files
@@ -287,3 +296,59 @@ command! -bang -nargs=? -complete=dir Files
 " nnoremap <leader>n :w<CR>:UpdateRemotePlugins<CR>:q<CR>
 
 command! -bang ProjectFiles call fzf#vim#files('~/code', <bang>0)
+
+" hi DiffAdd      cterm=none ctermfg=142          ctermbg=none
+" hi DiffChange   cterm=italic ctermfg=none          ctermbg=NONE
+" hi DiffDelete   cterm=none ctermfg=none      ctermbg=NONE
+" hi DiffText     cterm=none ctermfg=120        ctermbg=black
+" map § `
+" nmap ß :let snipeid=win_getid()<cr>
+" nmap ∂ :call win_gotoid(snipeid)<cr>
+set termguicolors
+
+augroup init_colors
+    au!
+    au ColorScheme * call SaneDiffDefaults()
+augroup END
+
+" A lot of vim colorschemes provide some wild defaults for diff colors. This
+" function sets the diff colors to some more sane defaults that at least looks
+" quite pleasant in most colorschemes.
+function! SaneDiffDefaults()
+    hi! DiffAdd    guibg=#26332c guifg=NONE gui=NONE
+    hi! DiffChange guibg=#273842 guifg=NONE gui=NONE
+    hi! DiffDelete guibg=#572E33 guifg=NONE gui=NONE
+    hi! DiffText   guibg=#314753 guifg=NONE gui=NONE
+    " hi! link       diffAdded     DiffAdd
+    " hi! link       diffChanged   DiffChange
+    " hi! link       diffRemoved   DiffDelete
+    " hi! link       diffBDiffer   WarningMsg
+    " hi! link       diffCommon    WarningMsg
+    " hi! link       diffDiffer    WarningMsg
+    " hi! link       diffFile      Directory
+    " hi! link       diffIdentical WarningMsg
+    " hi! link       diffIndexLine Number
+    " hi! link       diffIsA       WarningMsg
+    " hi! link       diffNoEOL     WarningMsg
+    " hi! link       diffOnly      WarningMsg
+endfunction 
+" hi! NonText gui=nocombine
+
+lua << EOF
+require'lualine'.setup{
+    options = { theme = 'material-nvim'  },
+    sections = {
+        lualine_c = {},
+        lualine_a = {
+            { 'filename',
+              file_status = true, -- displays file status (readonly status, modified status)
+              path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
+            }
+        },
+        lualine_x = {"filetype"},
+        lualine_y = {}
+    }
+}
+EOF
+
+call SaneDiffDefaults()
