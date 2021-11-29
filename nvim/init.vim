@@ -50,6 +50,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'dkasak/gruvbox' " theme
     Plug 'marko-cerovac/material.nvim'
+    Plug 'sainnhe/gruvbox-material'
     Plug 'chrisbra/Colorizer' " highlight color codes
     Plug 'christoomey/vim-run-interactive'
     Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
@@ -65,7 +66,7 @@ let mapleader = " "
 nnoremap <leader><space> <cmd>Telescope commands<cr>
 nnoremap <leader>f <cmd>Telescope find_files<cr>
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-" nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>b <cmd>Telescope buffers<cr>
 " nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " Move lines
@@ -138,7 +139,9 @@ set clipboard=unnamedplus " vim and os use same clipboard
 set inccommand=nosplit
 " Theme
 " colo gruvbox
-let g:material_style = 'deep ocean'
+let g:gruvbox_material_background = 'hard'
+" colo gruvbox-material
+let g:material_style = 'darker'
 colo material
 " set background=dark
 " Default indent set to 4
@@ -158,7 +161,7 @@ map <space>so :w<cr> :source $MYVIMRC<cr>
 " Buffers
 nmap <C-b> :bprev<cr>
 map <C-B> :bnext<cr>
-map <space>b :Buffers<cr>
+" map <space>b :Buffers<cr>
 
 " Windows
 map <space>vs :vs<cr>
