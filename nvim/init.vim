@@ -27,6 +27,7 @@ call plug#begin('~/.vim/plugged')
     " IDE
     Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
     Plug 'neovim/nvim-lspconfig'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'w0rp/ale'
     Plug 'SirVer/ultisnips' " Snippet engine
     Plug 'honza/vim-snippets' " Snippet collection
@@ -49,6 +50,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'dkasak/gruvbox' " theme
+    Plug 'tanvirtin/monokai.nvim'
     Plug 'marko-cerovac/material.nvim'
     Plug 'sainnhe/gruvbox-material'
     Plug 'chrisbra/Colorizer' " highlight color codes
@@ -61,6 +63,9 @@ call plug#end()
 
 " Set leader to space
 let mapleader = " "
+nnoremap <c-w> :w<cr>
+
+" lua require("init")
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader><space> <cmd>Telescope commands<cr>
@@ -161,7 +166,6 @@ map <space>so :w<cr> :source $MYVIMRC<cr>
 " Buffers
 nmap <C-b> :bprev<cr>
 map <C-B> :bnext<cr>
-" map <space>b :Buffers<cr>
 
 " Windows
 map <space>vs :vs<cr>
@@ -174,9 +178,9 @@ nnoremap <leader><C-j> <C-w>J
 nnoremap <leader><C-k> <C-w>K
 nnoremap <leader><C-h> <C-w>H
 nnoremap <leader><C-l> <C-w>L
-map + <C-w>+
-map - <C-w>-
-nmap <C-x> :q<cr>
+nnoremap + <C-w>+
+nnoremap - <C-w>-
+nnoremap <C-x> :q<cr>
 
 let g:python_host_prog = "/usr/bin/python2"
 let g:python3_host_prog = "/usr/bin/python3"
@@ -286,6 +290,7 @@ augroup END
 " === FZF ===
 " map <space>f :Files!<CR>
 map <space>rg :Rg!<CR>
+map <space>b :Buffers<cr>
 let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor}/*"'
 command! -bang -nargs=? -complete=dir Files
@@ -352,6 +357,15 @@ require'lualine'.setup{
         lualine_y = {}
     }
 }
+require('telescope').load_extension('fzf')
+require('telescope').setup{
+    buffers = {
+      sort_lastused = true
+    }
+  }
+
 EOF
 
 call SaneDiffDefaults()
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
