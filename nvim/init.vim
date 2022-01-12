@@ -37,7 +37,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-lualine/lualine.nvim'
     " Plug 'monkoose/fzf-hoogle.vim'
     " Plug 'aquach/vim-http-client'
-
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
+    Plug 'hrsh7th/nvim-cmp'
     " GIT
     " Plug 'mhinz/vim-signify'
     Plug 'tpope/vim-fugitive'
@@ -202,24 +207,24 @@ autocmd TermOpen * setlocal nonumber norelativenumber
 
 set autoread
 
-" == COC ==
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-nmap <leader>rn <Plug>(coc-rename)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> <leader>co :CocList --number-select outline<CR>
-nmap <leader>cs :CocList --number-select -I symbols<CR>
-nmap <leader>cl :CocList --number-select <CR>
-nmap <leader>ch :call CocAction('doHover')<CR>
-" nmap <leader>cf :call CocAction('format')<CR>
-nmap <leader>cf :CocFix<CR>
-nmap <leader>ca :CocAction<CR>
-nmap <leader>cre :CocRestart<CR>
-nmap <silent> <leader>ct <Plug>(coc-type-definition)
-nmap <silent> <leader>ci  <Plug>(coc-implementation)
-nmap <silent> <leader>cr <Plug>(coc-references)
-nmap <silent> <leader>ce <Plug>(coc-codelens-action)
-nmap <silent> <C-b> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-B> <Plug>(coc-diagnostic-next)
+" " == COC ==
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" nmap <leader>rn <Plug>(coc-rename)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> <leader>co :CocList --number-select outline<CR>
+" nmap <leader>cs :CocList --number-select -I symbols<CR>
+" nmap <leader>cl :CocList --number-select <CR>
+" nmap <leader>ch :call CocAction('doHover')<CR>
+" " nmap <leader>cf :call CocAction('format')<CR>
+" nmap <leader>cf :CocFix<CR>
+" nmap <leader>ca :CocAction<CR>
+" nmap <leader>cre :CocRestart<CR>
+" nmap <silent> <leader>ct <Plug>(coc-type-definition)
+" nmap <silent> <leader>ci  <Plug>(coc-implementation)
+" nmap <silent> <leader>cr <Plug>(coc-references)
+" nmap <silent> <leader>ce <Plug>(coc-codelens-action)
+" nmap <silent> <C-b> <Plug>(coc-diagnostic-prev)
+" nmap <silent> <C-B> <Plug>(coc-diagnostic-next)
 
 " == ALE ==
 function! FormatHaskell(buffer) abort

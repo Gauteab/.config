@@ -1,5 +1,5 @@
 
-require('lspconfig')
+-- require('lspconfig')
 local lsp_installer = require("nvim-lsp-installer")
 
 -- Register a handler that will be called for all installed servers.
@@ -57,3 +57,10 @@ vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', op
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+-- Format on save
+vim.api.nvim_command([[
+augroup Formatting
+    autocmd BufWritePre *.elm lua vim.lsp.buf.formatting_sync()
+augroup END 
+]])
