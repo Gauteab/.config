@@ -28,6 +28,7 @@ bindkey -v
 
 # Aliases
 alias vi="nvim"
+alias v="nvim"
 # alias vim="nvim"
 alias gitit="git add --all && git commit && git push"
 alias zshrc="vi ~/$CONFIG/zshrc && source ~/.zshrc"

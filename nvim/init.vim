@@ -25,17 +25,18 @@ call plug#begin('~/.vim/plugged')
     Plug 'kyazdani42/nvim-tree.lua'
 
     " IDE
-    Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
+    " Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
     Plug 'neovim/nvim-lspconfig'
+    Plug 'williamboman/nvim-lsp-installer'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-    Plug 'w0rp/ale'
-    Plug 'SirVer/ultisnips' " Snippet engine
+    " Plug 'w0rp/ale'
+    " Plug 'SirVer/ultisnips' " Snippet engine
     Plug 'honza/vim-snippets' " Snippet collection
     Plug 'sheerun/vim-polyglot' " Syntax Highlighting for many languages
     " Plug 'vim-airline/vim-airline'
     Plug 'nvim-lualine/lualine.nvim'
     " Plug 'monkoose/fzf-hoogle.vim'
-    Plug 'aquach/vim-http-client'
+    " Plug 'aquach/vim-http-client'
 
     " GIT
     " Plug 'mhinz/vim-signify'
@@ -65,7 +66,6 @@ call plug#end()
 let mapleader = " "
 nnoremap <c-s> :w<cr>
 
-" lua require("init")
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader><space> <cmd>Telescope commands<cr>
@@ -224,7 +224,7 @@ function! FormatHaskell(buffer) abort
     return { 'command': 'fourmolu --indentation 2 --indent-wheres true' }
 endfunction
 
-execute ale#fix#registry#Add('fourmolu', 'FormatHaskell', ['haskell'], 'fourmolu for haskell')
+" execute ale#fix#registry#Add('fourmolu', 'FormatHaskell', ['haskell'], 'fourmolu for haskell')
 
 let g:ale_linters_explicit = 1
 let g:ale_fixers = { 
@@ -354,30 +354,8 @@ function! SaneDiffDefaults()
 endfunction 
 " hi! NonText gui=nocombine
 
-lua << EOF
-require'lualine'.setup{
-    options = { theme = 'material-nvim'  },
-    sections = {
-        lualine_c = {},
-        lualine_a = {
-            { 'filename',
-              file_status = true, -- displays file status (readonly status, modified status)
-              path = 1 -- 0 = just filename, 1 = relative path, 2 = absolute path
-            }
-        },
-        lualine_x = {"filetype"},
-        lualine_y = {}
-    }
-}
-require('telescope').load_extension('fzf')
-require('telescope').setup{
-    buffers = {
-      sort_lastused = true
-    }
-  }
-
-EOF
-
 call SaneDiffDefaults()
+
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
+lua require("init")
