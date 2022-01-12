@@ -37,3 +37,4 @@ require('telescope').setup{
       sort_lastused = true
     }
   }
+require("hop").setup{}

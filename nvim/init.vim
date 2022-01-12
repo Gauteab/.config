@@ -62,14 +62,16 @@ call plug#begin('~/.vim/plugged')
     " Plug 'Gauteab/talon-fluent-nvim'
 call plug#end()
 
+lua require("init")
+
 " Set leader to space
 let mapleader = " "
 nnoremap <c-s> :w<cr>
 
 
 " Find files using Telescope command-line sugar.
+nnoremap <space>f <cmd>Telescope find_files<cr>
 nnoremap <leader><space> <cmd>Telescope commands<cr>
-nnoremap <leader>f <cmd>Telescope find_files<cr>
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>b <cmd>Telescope buffers<cr>
 " nnoremap <leader>fh <cmd>Telescope help_tags<cr>
@@ -358,4 +360,3 @@ call SaneDiffDefaults()
 
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
-lua require("init")
