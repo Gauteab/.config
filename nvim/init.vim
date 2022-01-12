@@ -310,6 +310,13 @@ command! -bang -nargs=? -complete=dir Files
 
 command! -bang ProjectFiles call fzf#vim#files('~/code', <bang>0)
 
+function! Leap(target, before, after)
+    exec "normal ml"
+    exec "Hop" . a:target
+    exec "normal  " . a:before
+    exec "normal `l" . a:after
+endfunction 
+
 " hi DiffAdd      cterm=none ctermfg=142          ctermbg=none
 " hi DiffChange   cterm=italic ctermfg=none          ctermbg=NONE
 " hi DiffDelete   cterm=none ctermfg=none      ctermbg=NONE
