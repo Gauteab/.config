@@ -63,7 +63,7 @@ call plug#end()
 
 " Set leader to space
 let mapleader = " "
-nnoremap <c-w> :w<cr>
+nnoremap <c-s> :w<cr>
 
 " lua require("init")
 
@@ -97,8 +97,8 @@ nmap <leader>dvm :DiffviewOpen master<CR>
 nmap <leader>gfh :DiffviewFileHistory<CR>
 nmap <leader>gp :G push<CR>
 nmap <leader>gl :G pull<CR>
-nmap <leader>gf :diffget //3<CR>
-nmap <leader>gj :diffget //2<CR>
+nmap <leader>gj :diffget //3<CR>
+nmap <leader>gf :diffget //2<CR>
 nmap <leader>gfc <cmd>Telescope git_commits<cr>
 nmap <leader>gb <cmd>Telescope git_branches<cr> 
 nmap <leader>gs <cmd>Telescope git_status<cr>
@@ -180,7 +180,7 @@ nnoremap <leader><C-h> <C-w>H
 nnoremap <leader><C-l> <C-w>L
 nnoremap + <C-w>+
 nnoremap - <C-w>-
-nnoremap <C-x> :q<cr>
+noremap <c-q> :q<cr>
 
 let g:python_host_prog = "/usr/bin/python2"
 let g:python3_host_prog = "/usr/bin/python3"
@@ -232,7 +232,7 @@ let g:ale_fixers = {
 \  'haskell': ['fourmolu']
 \}
 
-let g:ale_enabled = 1
+let g:ale_enabled = 0
 " let g:ale_linters = { 'haskell': ['hlint'] }
 " let g:ale_fixers = {'haskell': ['hlint']}
 " let g:ale_fixers = { 'purescript': ['purty'], 'haskell': ['hindent'], 'c': ['clang-format'], 'elm': ['elm-format'], 'python': ['autopep8'], 'java': ['google_java_format']}
@@ -245,11 +245,16 @@ let g:ale_c_clangformat_options = '--style=WebKit'
 " map <space>ap :ALEPrevious<CR>
 " map <space>an :ALENextWrap<CR>
 
+" Make title readable by talon
+let &titlestring ='VIM MODE:%{mode()} RPC:%{v:servername} - (%f) %t'
+set title
+
 augroup configgroup
     autocmd!
     " Highlight the symbol and its references when holding the cursor.
     " autocmd CursorHold * silent call CocActionAsync('highlight')
     " autocmd CursorHold * silent call CocActionAsync('doHover')
+    " autocmd BufEnter * call TalonSetTitle()
     autocmd BufEnter *.pl setlocal filetype=prolog
     autocmd BufEnter *.talon setlocal filetype=conf
     autocmd BufEnter *.tex setlocal filetype=tex

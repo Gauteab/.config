@@ -8,8 +8,8 @@
     "javascript",
     "typescriptreact",
     "javascriptreact",
-    "purescript",
-    "haskell"
+    "purescript"
+    // "haskell"
   ],
   "codeLens.enable": true,
   "languageserver": {
