@@ -89,7 +89,7 @@ inoremap º <Esc>:m .-2<CR>==gi
 vnoremap √ :m '>+1<CR>gv=gv
 vnoremap º :m '<-2<CR>gv=gv 
 
-map cd :cd 
+nmap <space>cd :cd 
 
 " Spelling
 nnoremap <C-f> z=
@@ -110,8 +110,8 @@ nmap <leader>gfc <cmd>Telescope git_commits<cr>
 nmap <leader>gb <cmd>Telescope git_branches<cr> 
 nmap <leader>gs <cmd>Telescope git_status<cr>
 nmap <leader>ghp :GitGutterPreviewHunk<cr>
-nmap gh :GitGutterNextHunk<cr> 
-nmap gH :GitGutterPrevHunk<cr> 
+nnoremap gh :GitGutterNextHunk<cr> 
+nnoremap gH :GitGutterPrevHunk<cr> 
 " nnoremap <C-b> :bNext<cr>
 " nnoremap <C-B> :blast<cr>
 
@@ -365,3 +365,10 @@ call SaneDiffDefaults()
 
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
+"
+
+
+augroup Formatting
+    autocmd!
+    autocmd BufWritePre *.elm lua vim.lsp.buf.formatting_sync()
+augroup end 
