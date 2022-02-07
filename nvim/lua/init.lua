@@ -32,12 +32,13 @@ require'lualine'.setup{
 }
 
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('coc')
 require('telescope').setup{
     buffers = {
       sort_lastused = true
     }
   }
-require("hop").setup{}
+require("hop").setup{multi_windows=true}
 
 
   -- Setup nvim-cmp.
@@ -56,7 +57,7 @@ require("hop").setup{}
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
+      -- { name = 'nvim_lsp' },
       -- { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.

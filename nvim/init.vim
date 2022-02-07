@@ -14,21 +14,22 @@ call plug#begin('~/.vim/plugged')
     Plug 'wellle/targets.vim'
 
     " Navigation
-    " Plug 'easymotion/vim-easymotion'
     Plug 'phaazon/hop.nvim'
     Plug 'preservim/nerdtree'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-    " Plug 'nvim-telescope/telescope-fzy-native.nvim'
     Plug 'kyazdani42/nvim-tree.lua'
 
     " IDE
-    " Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
+    Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
+    Plug 'fannheyward/telescope-coc.nvim'
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/nvim-lsp-installer'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    " post install (yarn install | npm install) then load plugin only for editing supported files
+    Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
     " Plug 'w0rp/ale'
     " Plug 'SirVer/ultisnips' " Snippet engine
     Plug 'honza/vim-snippets' " Snippet collection
@@ -109,11 +110,16 @@ nmap <leader>gf :diffget //2<CR>
 nmap <leader>gfc <cmd>Telescope git_commits<cr>
 nmap <leader>gb <cmd>Telescope git_branches<cr> 
 nmap <leader>gs <cmd>Telescope git_status<cr>
+nmap <leader>gts <cmd>G stash<cr>
+nmap <leader>gtp <cmd>G stash pop<cr>
+nmap <leader>ghp :GitGutterPreviewHunk<cr>
 nmap <leader>ghp :GitGutterPreviewHunk<cr>
 nnoremap gh :GitGutterNextHunk<cr> 
 nnoremap gH :GitGutterPrevHunk<cr> 
 " nnoremap <C-b> :bNext<cr>
 " nnoremap <C-B> :blast<cr>
+
+nnoremap gd <cmd>Telescope lsp_definitions<cr>
 
 " Markdown Preview
 let g:mkdp_auto_close = 0
@@ -155,6 +161,7 @@ let g:gruvbox_material_background = 'hard'
 " colo gruvbox-material
 let g:material_style = 'darker'
 colo material
+hi LineNr guifg=#cccccc
 " set background=dark
 " Default indent set to 4
 set tabstop=4 
@@ -171,8 +178,8 @@ map <space>es :sp  $MYVIMRC<cr>
 map <space>so :w<cr> :source $MYVIMRC<cr> 
 
 " Buffers
-nmap <C-b> :bprev<cr>
-map <C-B> :bnext<cr>
+nnoremap <C-b> :bprev<cr>
+nnoremap <C-B> :bnext<cr>
 
 " Windows
 map <space>vs :vs<cr>
@@ -195,8 +202,6 @@ let g:python3_host_prog = "/usr/bin/python3"
 nnoremap <F5> "=strftime("%Y-%m-%d")<CR>p
 inoremap <F5> <ESC>"=strftime("%Y-%m-%d")<CR>p
 
-nnoremap <space>ho :Hoogle<cr>
-
 " Terminal
 nnoremap <space>te :term<cr>
 tnoremap <C-space> <C-\><C-n>
@@ -207,31 +212,31 @@ autocmd TermOpen * setlocal nonumber norelativenumber
 
 set autoread
 
-" " == COC ==
-" command! -nargs=0 Prettier :CocCommand prettier.formatFile
-" nmap <leader>rn <Plug>(coc-rename)
+" == COC ==
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+nmap <leader>rn <Plug>(coc-rename)
 " nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> <leader>co :CocList --number-select outline<CR>
-" nmap <leader>cs :CocList --number-select -I symbols<CR>
-" nmap <leader>cl :CocList --number-select <CR>
-" nmap <leader>ch :call CocAction('doHover')<CR>
-" " nmap <leader>cf :call CocAction('format')<CR>
-" nmap <leader>cf :CocFix<CR>
-" nmap <leader>ca :CocAction<CR>
-" nmap <leader>cre :CocRestart<CR>
-" nmap <silent> <leader>ct <Plug>(coc-type-definition)
-" nmap <silent> <leader>ci  <Plug>(coc-implementation)
-" nmap <silent> <leader>cr <Plug>(coc-references)
-" nmap <silent> <leader>ce <Plug>(coc-codelens-action)
-" nmap <silent> <C-b> <Plug>(coc-diagnostic-prev)
-" nmap <silent> <C-B> <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>co :CocList --number-select outline<CR>
+nmap <leader>cs :CocList --number-select -I symbols<CR>
+nmap <leader>cl :CocList --number-select <CR>
+nmap <leader>ch :call CocAction('doHover')<CR>
+" nmap <leader>cf :call CocAction('format')<CR>
+nmap <leader>cf :CocFix<CR>
+nmap <leader>ca :CocAction<CR>
+nmap <leader>cre :CocRestart<CR>
+nmap <silent> <leader>ct <Plug>(coc-type-definition)
+nmap <silent> <leader>ci  <Plug>(coc-implementation)
+nmap <silent> <leader>cr <Plug>(coc-references)
+nmap <silent> <leader>ce <Plug>(coc-codelens-action)
+nmap <silent> <C-b> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-B> <Plug>(coc-diagnostic-next)
 
 " == ALE ==
 function! FormatHaskell(buffer) abort
     return { 'command': 'fourmolu --indentation 2 --indent-wheres true' }
 endfunction
 
-" execute ale#fix#registry#Add('fourmolu', 'FormatHaskell', ['haskell'], 'fourmolu for haskell')
+" silent execute ale#fix#registry#Add('fourmolu', 'FormatHaskell', ['haskell'], 'fourmolu for haskell')
 
 let g:ale_linters_explicit = 1
 let g:ale_fixers = { 
@@ -365,8 +370,9 @@ call SaneDiffDefaults()
 
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
-"
 
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
 
 augroup Formatting
     autocmd!
