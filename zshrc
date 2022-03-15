@@ -16,6 +16,7 @@ plugins=(
   colored-man-pages
   extract
   web-search
+  npm
 #  fzf-z
 )
 
