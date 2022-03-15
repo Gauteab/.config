@@ -23,8 +23,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'kyazdani42/nvim-tree.lua'
 
     " IDE
-    Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
-    Plug 'fannheyward/telescope-coc.nvim'
+    " Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
+    " Plug 'fannheyward/telescope-coc.nvim'
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/nvim-lsp-installer'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
@@ -32,6 +32,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
     " Plug 'w0rp/ale'
     " Plug 'SirVer/ultisnips' " Snippet engine
+    Plug 'L3MON4D3/LuaSnip'
+    Plug 'rafamadriz/friendly-snippets'
+    Plug 'elianiva/telescope-npm.nvim'
+    Plug 'saadparwaiz1/cmp_luasnip'
     Plug 'honza/vim-snippets' " Snippet collection
     Plug 'sheerun/vim-polyglot' " Syntax Highlighting for many languages
     " Plug 'vim-airline/vim-airline'
@@ -113,7 +117,8 @@ nmap <leader>gs <cmd>Telescope git_status<cr>
 nmap <leader>gts <cmd>G stash<cr>
 nmap <leader>gtp <cmd>G stash pop<cr>
 nmap <leader>ghp :GitGutterPreviewHunk<cr>
-nmap <leader>ghp :GitGutterPreviewHunk<cr>
+nmap <leader>ghu :GitGutterUndoHunk<cr>
+nmap <leader>ghs :GitGutterStageHunk<cr>
 nnoremap gh :GitGutterNextHunk<cr> 
 nnoremap gH :GitGutterPrevHunk<cr> 
 " nnoremap <C-b> :bNext<cr>
@@ -212,24 +217,24 @@ autocmd TermOpen * setlocal nonumber norelativenumber
 
 set autoread
 
-" == COC ==
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-nmap <leader>rn <Plug>(coc-rename)
-" nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> <leader>co :CocList --number-select outline<CR>
-nmap <leader>cs :CocList --number-select -I symbols<CR>
-nmap <leader>cl :CocList --number-select <CR>
-nmap <leader>ch :call CocAction('doHover')<CR>
-" nmap <leader>cf :call CocAction('format')<CR>
-nmap <leader>cf :CocFix<CR>
-nmap <leader>ca :CocAction<CR>
-nmap <leader>cre :CocRestart<CR>
-nmap <silent> <leader>ct <Plug>(coc-type-definition)
-nmap <silent> <leader>ci  <Plug>(coc-implementation)
-nmap <silent> <leader>cr <Plug>(coc-references)
-nmap <silent> <leader>ce <Plug>(coc-codelens-action)
-nmap <silent> <C-b> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-B> <Plug>(coc-diagnostic-next)
+" " == COC ==
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" nmap <leader>rn <Plug>(coc-rename)
+" " nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> <leader>co :CocList --number-select outline<CR>
+" nmap <leader>cs :CocList --number-select -I symbols<CR>
+" nmap <leader>cl :CocList --number-select <CR>
+" nmap <leader>ch :call CocAction('doHover')<CR>
+" " nmap <leader>cf :call CocAction('format')<CR>
+" nmap <leader>cf :CocFix<CR>
+" nmap <leader>ca :CocAction<CR>
+" nmap <leader>cre :CocRestart<CR>
+" nmap <silent> <leader>ct <Plug>(coc-type-definition)
+" nmap <silent> <leader>ci  <Plug>(coc-implementation)
+" nmap <silent> <leader>cr <Plug>(coc-references)
+" nmap <silent> <leader>ce <Plug>(coc-codelens-action)
+" nmap <silent> <C-b> <Plug>(coc-diagnostic-prev)
+" nmap <silent> <C-B> <Plug>(coc-diagnostic-next)
 
 " == ALE ==
 function! FormatHaskell(buffer) abort
@@ -378,3 +383,20 @@ augroup Formatting
     autocmd!
     autocmd BufWritePre *.elm lua vim.lsp.buf.formatting_sync()
 augroup end 
+
+
+
+nnoremap gD <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <C-i> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <space>wa <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
+nnoremap <space>wr <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
+nnoremap <space>wl <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
+nnoremap <space>D <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <space>rn <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <space>ca <cmd>Telescope lsp_code_actions<cr>
+nnoremap gr <cmd>Telescope lsp_references<CR>
+nnoremap <space>e <cmd>lua vim.diagnostic.open_float()<CR>
+nnoremap gE <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap ge <cmd>lua vim.diagnostic.goto_next()<CR>
