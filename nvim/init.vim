@@ -31,7 +31,7 @@ call plug#begin('~/.vim/plugged')
     " post install (yarn install | npm install) then load plugin only for editing supported files
     Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
     " Plug 'w0rp/ale'
-    " Plug 'SirVer/ultisnips' " Snippet engine
+    Plug 'SirVer/ultisnips' " Snippet engine
     Plug 'L3MON4D3/LuaSnip'
     Plug 'rafamadriz/friendly-snippets'
     Plug 'elianiva/telescope-npm.nvim'
