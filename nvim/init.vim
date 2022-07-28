@@ -8,6 +8,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'unblevable/quick-scope'
     " Plug 'kana/vim-textobj-entire'
+    Plug 'tommcdo/vim-exchange'
     Plug 'mg979/vim-visual-multi'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'matze/vim-move'
@@ -28,6 +29,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/nvim-lsp-installer'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    Plug 'nvim-treesitter/playground'
+    Plug 'nvim-treesitter/nvim-treesitter-textobjects'
     " post install (yarn install | npm install) then load plugin only for editing supported files
     Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
     " Plug 'w0rp/ale'
@@ -72,18 +75,23 @@ call plug#begin('~/.vim/plugged')
     " Plug 'Gauteab/talon-fluent-nvim'
 call plug#end()
 
+lua package.loaded['init'] = nil
 lua require("init")
 
 " Set leader to space
 let mapleader = " "
-nnoremap <c-s> :w<cr>
 
+" save with ctrl-s
+nnoremap <c-s> <cmd>w<cr>
+inoremap <C-s> <esc><cmd>w<CR>
+vnoremap <C-s> <esc><cmd>w<CR>
 
 " Find files using Telescope command-line sugar.
 nnoremap <space>f <cmd>Telescope find_files<cr>
 nnoremap <leader><space> <cmd>Telescope commands<cr>
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>s <cmd>Telescope current_buffer_fuzzy_find<cr>
 " nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " Move lines
@@ -98,8 +106,8 @@ nmap <space>cd :cd
 
 " Spelling
 nnoremap <C-f> z=
-nnoremap <C-S> ]s
-nnoremap <C-s> [s
+" nnoremap <C-S> ]s
+" nnoremap <C-s> [s
 
 " Git
 nmap <leader>gg :G<CR>
@@ -375,13 +383,16 @@ call SaneDiffDefaults()
 
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
+" nnoremap gfc <cmd>foldclose<cr>
+" nnoremap gfo <cmd>foldopen<cr>
 
 let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
 
 augroup Formatting
     autocmd!
-    autocmd BufWritePre *.elm lua vim.lsp.buf.formatting_sync()
+    autocmd BufWritePre *.elm,*.lua lua vim.lsp.buf.formatting_sync()
+    autocmd BufWritePost */komponentkassen/packages/elm/**/*.elm silent :!touch '/Users/gaute/svv/komponentkassen/apps/elm-storybook/src/Main.elm'
 augroup end 
 
 
