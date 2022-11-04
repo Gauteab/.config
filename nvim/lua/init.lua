@@ -1,36 +1,26 @@
+require("my.cmp")
+require("my.lsp")
+require("my.lualine")
+require("my.telescope")
+require("my.treesitter")
 
-require'nvim-tree'.setup()
+require("hop").setup { multi_windows = true }
+require("rest-nvim").setup { result_split_horizontal = false }
 
-require'git-delta'
+require("luasnip.loaders.from_vscode").lazy_load()
+vim.cmd [[
+" press <Tab> to expand or jump in a snippet. These can also be mapped separately
+" via <Plug>luasnip-expand-snippet and <Plug>luasnip-jump-next.
+imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
+" -1 for jumping backwards.
+inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
 
-require('neogit').setup {
-    integrations = {
-     use { 
-       'TimUntersberger/neogit', 
-       requires = { 
-         'nvim-lua/plenary.nvim',
-         'sindrets/diffview.nvim' 
-       }
-     },
-    diffview = true  
-  }
-}
+snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
+snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
 
-local lsp = require'lspconfig'
-
-lsp.elmls.setup{}
-
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
-  ignore_install = { "javascript" }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust" },  -- list of language that will be disabled
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
+" For changing choices in choiceNodes (not strictly necessary for a basic setup).
+imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+]]
+-- vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
+-- vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})

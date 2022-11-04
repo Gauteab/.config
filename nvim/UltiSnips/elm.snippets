@@ -11,3 +11,8 @@ snippet todo "description"
 Debug.todo ""
 endsnippet
 	
+snippet with "with* function"
+with$1 : $1 -> $2 -> $2
+with$1 ${1/(.)(.*)/\l$1$2/} ($2 kort) =
+    $2 { $2 | $3 = ${1/(.)(.*)/\l$1$2/}  }
+endsnippet

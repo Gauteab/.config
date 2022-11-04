@@ -1,6 +1,6 @@
 export TERM="xterm-256color"
 export EDITOR="nvim"
-export CONFIG="$HOME/.config"
+export CONFIG="~/.config"
 
 # == ZSH ==
 export ZSH="$HOME/.oh-my-zsh"
@@ -16,7 +16,7 @@ plugins=(
   colored-man-pages
   extract
   web-search
-#  fzf-z
+  npm
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -26,12 +26,12 @@ source ~/.profile
 # Vi Mode
 bindkey -v
 
+# 
 # Aliases
-alias vi="nvim"
-# alias vim="nvim"
-alias gitit="git add --all && git commit && git push"
-alias zshrc="vi ~/$CONFIG/zshrc && source ~/.zshrc"
-alias vimrc="vi ~/$CONFIG/nvim/init.vim"
+#
+alias v="nvim"
+alias zshrc="nvim $CONFIG/zshrc && source ~/.zshrc"
+alias vimrc="nvim $CONFIG/nvim/init.vim"
 
 alias l='clear; exa -la --group-directories-first'
 alias ls='exa'
@@ -45,9 +45,16 @@ alias talon-repl='~/.talon/.venv/bin/repl'
 alias talon-log='tail -f ~/.talon/talon.log'
 alias talon-pip='~/.talon/bin/pip'
 
+alias nrd='npm run dev'
+alias bi='brew install'
+
+alias gcd='git checkout dev'
+alias gdta='GIT_EXTERNAL_DIFF=difft git diff'
 
 
+#
 # Functions
+#
 
 function cheat { curl "cheat.sh/$1" }
 
@@ -119,6 +126,22 @@ function haskell-deamon {
         --restart "./stack.yaml"
 }
 
+# https://github.com/torifat/npms
+function npms() {
+  if [ ! -f package.json ]; then
+    echo "package.json not found" >&2
+  else 
+    local command=$(jq '.scripts | keys[]' package.json -r | tr -d '"' | 
+    fzf --reverse \
+      --preview-window=:wrap \
+      --preview "jq '.scripts.\"{}\"' package.json -r | tr -d '\"' | sed 's/^[[:blank:]]*//'")
+
+    if [ -n "$command" ]; then
+      eval "npm run $command"
+    fi
+  fi
+}
+
 eval "$(starship init zsh)"
 
 # zplug "zsh-users/zsh-syntax-highlighting", defer:2
@@ -126,3 +149,5 @@ eval "$(starship init zsh)"
 
 # [[ $TERM != "screen" ]] && exec tmux
 
+export function hs() { ghc -e "Prelude.interact ($1)" }
+export function lens() { ghc -e "Prelude.interact (show . (toListOf ($1)))" }
