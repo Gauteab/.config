@@ -1,5 +1,5 @@
 require 'nvim-treesitter.configs'.setup {
-    ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+    ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
     ignore_install = {}, -- List of parsers to ignore installing
     highlight = {
@@ -40,6 +40,8 @@ require 'nvim-treesitter.configs'.setup {
                 -- You can use the capture groups defined in textobjects.scm
                 ["af"] = "@function.outer",
                 ["if"] = "@function.inner",
+                ["aC"] = "@class.outer",
+                ["iC"] = "@class.inner",
                 ["ai"] = "@call.outer",
                 ["ii"] = "@call.inner",
                 ["ao"] = "@object",
@@ -50,4 +52,7 @@ require 'nvim-treesitter.configs'.setup {
             },
         },
     },
+    autotag = {
+        enable = true,
+    }
 }

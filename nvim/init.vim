@@ -5,8 +5,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'jiangmiao/auto-pairs'
     Plug 'junegunn/vim-easy-align'
     Plug 'tpope/vim-commentary'
+    Plug 'JoosepAlviste/nvim-ts-context-commentstring'
     Plug 'tpope/vim-surround'
-    Plug 'unblevable/quick-scope'
+    Plug 'windwp/nvim-ts-autotag'
     " Plug 'kana/vim-textobj-entire'
     Plug 'tommcdo/vim-exchange'
     Plug 'mg979/vim-visual-multi'
@@ -15,12 +16,18 @@ call plug#begin('~/.vim/plugged')
     Plug 'wellle/targets.vim'
 
     " Navigation
+    Plug 'ggandor/lightspeed.nvim'
     Plug 'phaazon/hop.nvim'
+    Plug 'unblevable/quick-scope'
+
+    " File browsing
     Plug 'preservim/nerdtree'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'nvim-telescope/telescope-ui-select.nvim'
+    Plug 'nvim-telescope/telescope-media-files.nvim'
     Plug 'kyazdani42/nvim-tree.lua'
 
     " IDE
@@ -34,7 +41,7 @@ call plug#begin('~/.vim/plugged')
     " post install (yarn install | npm install) then load plugin only for editing supported files
     Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
     " Plug 'w0rp/ale'
-    Plug 'SirVer/ultisnips' " Snippet engine
+    " Plug 'SirVer/ultisnips' " Snippet engine
     Plug 'L3MON4D3/LuaSnip'
     Plug 'rafamadriz/friendly-snippets'
     Plug 'elianiva/telescope-npm.nvim'
@@ -61,6 +68,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-gitgutter'
 
     " Misc
+    Plug 'rest-nvim/rest.nvim'
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'dkasak/gruvbox' " theme
@@ -71,11 +79,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'christoomey/vim-run-interactive'
     Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
     Plug 'nvim-lua/plenary.nvim'
+    Plug 'tpope/vim-repeat'
+
 
     " Plug 'Gauteab/talon-fluent-nvim'
 call plug#end()
 
-lua package.loaded['init'] = nil
+" lua package.loaded['init'] = nil
 lua require("init")
 
 " Set leader to space
@@ -284,14 +294,20 @@ augroup configgroup
     autocmd BufEnter *.talon setlocal filetype=conf
     autocmd BufEnter *.tex setlocal filetype=tex
     autocmd BufEnter *.talon setlocal commentstring=#\ %s
+    autocmd BufEnter *.glsl setlocal commentstring=//\ %s
     autocmd BufEnter *.purs setlocal commentstring=--\ %s
     autocmd BufEnter *.bib setlocal commentstring=%\ %s
-    autocmd BufEnter *.purs,*.hs,*.ts,*.tsx,*.js* setlocal tabstop=2
-    autocmd BufEnter *.purs,*.hs,*.ts,*.ts*,*.js* setlocal shiftwidth=2
-    autocmd BufEnter *.purs,*.hs,*.ts,*.ts*,*.js* setlocal softtabstop=2
+    " autocmd BufEnter *.tsx setlocal commentstring={/*\ %s\ */}
+    autocmd BufEnter *.ts,*.tsx,*.js setlocal tabstop=2
+    autocmd BufEnter *.ts,*.ts*,*.js setlocal shiftwidth=2
+    autocmd BufEnter *.ts,*.ts*,*.js setlocal softtabstop=2
+    autocmd BufEnter *.purs,*.hs setlocal tabstop=2
+    autocmd BufEnter *.purs,*.hs setlocal shiftwidth=2
+    autocmd BufEnter *.purs,*.hs setlocal softtabstop=2
     autocmd BufEnter *.elm nnoremap <buffer> <leader>ta 0ywkpA: 
     autocmd BufEnter *.elm set ft=elm
     autocmd BufEnter *.hs,*.purs nnoremap <buffer> <leader>ta 0ywkpA:: 
+    autocmd FileType fugitive nmap <buffer> <tab> =
     " autocmd BufWritePost *.hs silent call Fourmolu()
 augroup END
 
@@ -335,12 +351,12 @@ command! -bang -nargs=? -complete=dir Files
 
 command! -bang ProjectFiles call fzf#vim#files('~/code', <bang>0)
 
-function! Leap(target, before, after)
-    exec "normal ml"
-    exec "Hop" . a:target
-    exec "normal  " . a:before
-    exec "normal `l" . a:after
-endfunction 
+" function! Leap(target, before, after)
+"     exec "normal ml"
+"     exec "Hop" . a:target
+"     exec "normal  " . a:before
+"     exec "normal `l" . a:after
+" endfunction 
 
 " hi DiffAdd      cterm=none ctermfg=142          ctermbg=none
 " hi DiffChange   cterm=italic ctermfg=none          ctermbg=NONE
@@ -379,7 +395,7 @@ function! SaneDiffDefaults()
 endfunction 
 " hi! NonText gui=nocombine
 
-call SaneDiffDefaults()
+" call SaneDiffDefaults()
 
 " set foldmethod=expr
 " set foldexpr=nvim_treesitter#foldexpr()
@@ -388,10 +404,11 @@ call SaneDiffDefaults()
 
 let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
+let g:prettier#autoformat_config_files = [".prettierrc.yaml",".prettierrc.js"]
 
 augroup Formatting
     autocmd!
-    autocmd BufWritePre *.elm,*.lua lua vim.lsp.buf.formatting_sync()
+    autocmd BufWritePre *.elm,*.lua,*.hs lua vim.lsp.buf.format()
     autocmd BufWritePost */komponentkassen/packages/elm/**/*.elm silent :!touch '/Users/gaute/svv/komponentkassen/apps/elm-storybook/src/Main.elm'
 augroup end 
 
@@ -400,14 +417,29 @@ augroup end
 nnoremap gD <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap gi <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <C-i> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <C-i> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <space>wa <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
 nnoremap <space>wr <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
 nnoremap <space>wl <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
 nnoremap <space>D <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <space>rn <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <space>ca <cmd>Telescope lsp_code_actions<cr>
+nnoremap <space>ca <cmd>lua vim.lsp.buf.code_action()<cr>
 nnoremap gr <cmd>Telescope lsp_references<CR>
 nnoremap <space>e <cmd>lua vim.diagnostic.open_float()<CR>
 nnoremap gE <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap ge <cmd>lua vim.diagnostic.goto_next()<CR>
+
+nnoremap øø <cmd>lua require'leap'.leap()<CR>
+nnoremap øb <cmd>lua require'leap'.perform("bring")<CR>
+nnoremap øt <cmd>lua require'leap'.perform("take")<CR>
+nnoremap ød <cmd>lua require'leap'.perform("chuck")<CR>
+nnoremap øy <cmd>lua require'leap'.perform("yank")<CR>
+nnoremap øm <cmd>lua require'leap'.perform("move")<CR>
+
+nnoremap <space>rr <Plug>RestNvim
+nnoremap æ :HopChar1<cr>
+
+nnoremap s /
+vnoremap s /
+
+nnoremap <C-t> :NERDTreeFind<cr>
