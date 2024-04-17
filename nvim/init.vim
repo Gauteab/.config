@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/vim-easy-align'
     Plug 'tpope/vim-commentary'
     Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+    Plug 'MaxMEllon/vim-jsx-pretty'
     Plug 'tpope/vim-surround'
     Plug 'windwp/nvim-ts-autotag'
     " Plug 'kana/vim-textobj-entire'
@@ -18,7 +19,7 @@ call plug#begin('~/.vim/plugged')
     " Navigation
     Plug 'ggandor/lightspeed.nvim'
     Plug 'phaazon/hop.nvim'
-    Plug 'unblevable/quick-scope'
+    " Plug 'unblevable/quick-scope'
 
     " File browsing
     Plug 'preservim/nerdtree'
@@ -29,12 +30,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-telescope/telescope-ui-select.nvim'
     Plug 'nvim-telescope/telescope-media-files.nvim'
     Plug 'kyazdani42/nvim-tree.lua'
+    Plug 'windwp/nvim-spectre'
 
     " IDE
     " Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP
     " Plug 'fannheyward/telescope-coc.nvim'
+    Plug 'github/copilot.vim'
+    " Plug 'williamboman/nvim-lsp-installer'
     Plug 'neovim/nvim-lspconfig'
-    Plug 'williamboman/nvim-lsp-installer'
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'nvim-treesitter/playground'
     Plug 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -48,6 +53,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'saadparwaiz1/cmp_luasnip'
     Plug 'honza/vim-snippets' " Snippet collection
     Plug 'sheerun/vim-polyglot' " Syntax Highlighting for many languages
+    Plug 'prisma/vim-prisma'
+    Plug 'google/vim-jsonnet'
     " Plug 'vim-airline/vim-airline'
     Plug 'nvim-lualine/lualine.nvim'
     " Plug 'monkoose/fzf-hoogle.vim'
@@ -80,6 +87,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
     Plug 'nvim-lua/plenary.nvim'
     Plug 'tpope/vim-repeat'
+    Plug 'voldikss/vim-floaterm'
 
 
     " Plug 'Gauteab/talon-fluent-nvim'
@@ -98,6 +106,7 @@ vnoremap <C-s> <esc><cmd>w<CR>
 
 " Find files using Telescope command-line sugar.
 nnoremap <space>f <cmd>Telescope find_files<cr>
+nnoremap <space>hf <cmd>Telescope find_files hidden=true<cr>
 nnoremap <leader><space> <cmd>Telescope commands<cr>
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>b <cmd>Telescope buffers<cr>
@@ -124,7 +133,7 @@ nmap <leader>gg :G<CR>
 nmap <leader>gd :DiffviewOpen<CR>
 nmap <leader>dvc :DiffviewClose<CR>
 nmap <leader>dvm :DiffviewOpen master<CR>
-nmap <leader>gfh :DiffviewFileHistory<CR>
+nmap <leader>gfh :DiffviewFileHistory %<CR>
 nmap <leader>gp :G push<CR>
 nmap <leader>gl :G pull<CR>
 nmap <leader>gj :diffget //3<CR>
@@ -294,6 +303,7 @@ augroup configgroup
     autocmd BufEnter *.talon setlocal filetype=conf
     autocmd BufEnter *.tex setlocal filetype=tex
     autocmd BufEnter *.talon setlocal commentstring=#\ %s
+    autocmd BufEnter *.roc setlocal commentstring=#\ %s
     autocmd BufEnter *.glsl setlocal commentstring=//\ %s
     autocmd BufEnter *.purs setlocal commentstring=--\ %s
     autocmd BufEnter *.bib setlocal commentstring=%\ %s
@@ -304,8 +314,9 @@ augroup configgroup
     autocmd BufEnter *.purs,*.hs setlocal tabstop=2
     autocmd BufEnter *.purs,*.hs setlocal shiftwidth=2
     autocmd BufEnter *.purs,*.hs setlocal softtabstop=2
-    autocmd BufEnter *.elm nnoremap <buffer> <leader>ta 0ywkpA: 
-    autocmd BufEnter *.elm set ft=elm
+    autocmd BufEnter *.elm,*.roc nnoremap <buffer> <leader>ta 0ywkpA: 
+    autocmd BufEnter *.elm,*.gren set ft=elm
+    autocmd BufEnter *.roc set ft=elixir
     autocmd BufEnter *.hs,*.purs nnoremap <buffer> <leader>ta 0ywkpA:: 
     autocmd FileType fugitive nmap <buffer> <tab> =
     " autocmd BufWritePost *.hs silent call Fourmolu()
@@ -408,11 +419,23 @@ let g:prettier#autoformat_config_files = [".prettierrc.yaml",".prettierrc.js"]
 
 augroup Formatting
     autocmd!
-    autocmd BufWritePre *.elm,*.lua,*.hs lua vim.lsp.buf.format()
+    autocmd BufWritePre *.elm,*.lua,*.hs,*.rs,*.py lua vim.lsp.buf.format()
+    autocmd BufWritePost *.tf,*.tfvar,*.tfbackend silent :!terraform fmt %
+    autocmd BufWritePost *.roc silent :!roc format % & tmux send -t 1 C-c C-l 'roc dev app/src/main.roc' Enter
+    autocmd BufWritePost *.libsonnet silent :!jsonnetfmt %
     autocmd BufWritePost */komponentkassen/packages/elm/**/*.elm silent :!touch '/Users/gaute/svv/komponentkassen/apps/elm-storybook/src/Main.elm'
 augroup end 
 
+nnoremap <leader>gr :silent !roc format % & tmux send -t 1 C-c C-l 'cargo run repl' Enter 'x = 1' Enter 'x = 1' Enter<cr>
 
+
+nnoremap <leader>S <cmd>lua require('spectre').open()<CR>
+"search current word
+nnoremap <leader>sw <cmd>lua require('spectre').open_visual({select_word=true})<CR>
+vnoremap <leader>s <esc>:lua require('spectre').open_visual()<CR>
+"  search in current file
+nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>
+" run command :Spectre
 
 nnoremap gD <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap K <cmd>lua vim.lsp.buf.hover()<CR>

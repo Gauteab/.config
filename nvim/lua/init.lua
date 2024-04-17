@@ -1,5 +1,6 @@
 require("my.cmp")
 require("my.lsp")
+require("my.mason_lspconfig")
 require("my.lualine")
 require("my.telescope")
 require("my.treesitter")

@@ -49,7 +49,12 @@ alias nrd='npm run dev'
 alias bi='brew install'
 
 alias gcd='git checkout dev'
+alias gcob='git checkout $(git branch | fzf)'
 alias gdta='GIT_EXTERNAL_DIFF=difft git diff'
+
+export function ti() {
+    terraform init -backend-config="${1:-dev}.gcs.tfbackend" -reconfigure
+}
 
 
 #
@@ -151,3 +156,13 @@ eval "$(starship init zsh)"
 
 export function hs() { ghc -e "Prelude.interact ($1)" }
 export function lens() { ghc -e "Prelude.interact (show . (toListOf ($1)))" }
+
+export function ei() { elm install $(curl -s --compressed -H "Accept: application/json" https://package.elm-lang.org/search.json | jq '.[].name' -r | fzf --preview 'curl -s --compressed -H "Accept: application/json" https://package.elm-lang.org/packages/{}/latest/elm.json | jq ".summary" -r') }
+
+export function dock() {
+  docker $1 $(docker ps -a | fzf --layout=reverse | cut -d " " -f1)
+}
+
+export PATH=$PATH:/Users/gaute/Downloads/roc_nightly-macos_x86_64-2023-12-08-e8b4f12
+export LLVM_SYS_160_PREFIX=$(brew --prefix llvm@16)
+
