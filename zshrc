@@ -83,11 +83,9 @@ fkill() { # fkill - kill processes - list only the ones you can kill. Modified t
     fi  
 }
 
-# use fzf with 'z'
-unalias z 2> /dev/null
-z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+j() {
+  [ $# -gt 0 ] && z "$*" && return
+  cd "$(z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
 
 # source ~/.fzf.zsh
@@ -163,6 +161,6 @@ export function dock() {
   docker $1 $(docker ps -a | fzf --layout=reverse | cut -d " " -f1)
 }
 
-export PATH=$PATH:/Users/gaute/Downloads/roc_nightly-macos_x86_64-2023-12-08-e8b4f12
 export LLVM_SYS_160_PREFIX=$(brew --prefix llvm@16)
 
+export PATH=$PATH:~/roc_nightly-macos_apple_silicon-2024-09-27-aa44e2c284
