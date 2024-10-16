@@ -11,6 +11,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=6'
 plugins=(
   git
   z
+  zsh-z
   zsh-syntax-highlighting
   zsh-autosuggestions
   colored-man-pages
@@ -84,10 +85,9 @@ fkill() { # fkill - kill processes - list only the ones you can kill. Modified t
 }
 
 # use fzf with 'z'
-unalias z 2> /dev/null
-z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+j() {
+  [ $# -gt 0 ] && z "$*" && return
+  cd "$(z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
 
 # source ~/.fzf.zsh
